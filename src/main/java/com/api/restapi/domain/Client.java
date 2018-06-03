@@ -14,7 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.api.restapi.domain.enums.ClientType;;
+import com.api.restapi.domain.enums.ClientType;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Client implements Serializable {
@@ -27,6 +28,7 @@ public class Client implements Serializable {
 	private String cpfOuCnpj;
 	private Integer type;
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy="client")
 	private List<Address> adresses = new ArrayList<>();
 	
