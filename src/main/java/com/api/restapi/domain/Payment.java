@@ -2,14 +2,25 @@ package com.api.restapi.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
 import com.api.restapi.domain.enums.PaymentState;
 
+@Entity
 public class Payment implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@Id
 	private Integer id;
 	private PaymentState state;
 	
+	@OneToOne
+	@JoinColumn(name="id_order")
+	@MapsId
 	private Order order;
 	
 	public Payment() {
