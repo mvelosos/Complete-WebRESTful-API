@@ -1,1 +1,1 @@
-# A complete RestApi with differents types of relationships betwen the entities.
+# A complete RestFul API with differente types of relationships betwen the entities.
