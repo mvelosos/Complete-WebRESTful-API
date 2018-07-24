@@ -1,5 +1,6 @@
 package com.api.restapi;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -9,16 +10,23 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.api.restapi.domain.Address;
+import com.api.restapi.domain.CardPayment;
 import com.api.restapi.domain.Category;
 import com.api.restapi.domain.City;
 import com.api.restapi.domain.Client;
+import com.api.restapi.domain.Order;
+import com.api.restapi.domain.Payment;
 import com.api.restapi.domain.Product;
 import com.api.restapi.domain.State;
+import com.api.restapi.domain.TicketPayment;
 import com.api.restapi.domain.enums.ClientType;
+import com.api.restapi.domain.enums.PaymentState;
 import com.api.restapi.repositories.AddressRepository;
 import com.api.restapi.repositories.CategoryRepository;
 import com.api.restapi.repositories.CityRepository;
 import com.api.restapi.repositories.ClientRepository;
+import com.api.restapi.repositories.OrderRepository;
+import com.api.restapi.repositories.PaymentRepository;
 import com.api.restapi.repositories.ProductRepository;
 import com.api.restapi.repositories.StateRepository;
 
@@ -42,6 +50,12 @@ public class RestapiApplication implements CommandLineRunner {
 	
 	@Autowired
 	private AddressRepository addressRepository;
+	
+	@Autowired
+	private OrderRepository orderRepository;
+	
+	@Autowired
+	private PaymentRepository paymentRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(RestapiApplication.class, args);
@@ -91,6 +105,24 @@ public class RestapiApplication implements CommandLineRunner {
 		
 		clientRepository.save(Arrays.asList(cli1));
 		addressRepository.save(Arrays.asList(a1, a2));
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		
+		Order ped1 = new Order(null, sdf.parse("30/09/2017 10:32"), cli1, a1);
+		Order ped2 = new Order(null, sdf.parse("10/10/2017 19:35"), cli1, a2);
+		
+		Payment paym1 = new CardPayment(null, PaymentState.SETTLED, ped1, 6);
+		ped1.setPayment(paym1);
+		
+		Payment paym2 = new TicketPayment(null, PaymentState.PENDING, ped2, sdf.parse("20/10/2017 00:00"), null);
+		ped2.setPayment(paym2);
+		
+		cli1.getOrders().addAll(Arrays.asList(ped1, ped2));
+
+		orderRepository.save(Arrays.asList(ped1, ped2));
+		paymentRepository.save(Arrays.asList(paym1, paym2));
+		
+		
 		
 		
 	}

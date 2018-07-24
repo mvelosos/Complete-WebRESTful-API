@@ -2,8 +2,11 @@ package com.api.restapi.domain;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+
 import com.api.restapi.domain.enums.PaymentState;
 
+@Entity
 public class TicketPayment extends Payment {
 	private static final long serialVersionUID = 1L;
 
